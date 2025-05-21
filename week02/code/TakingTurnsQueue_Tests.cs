@@ -100,7 +100,7 @@ public class TakingTurnsQueueTests
         players.AddPerson(bob.Name, bob.Turns);
         players.AddPerson(tim.Name, tim.Turns);
         players.AddPerson(sue.Name, sue.Turns);
-
+        
         for (int i = 0; i < 10; i++)
         {
             var person = players.GetNextPerson();
