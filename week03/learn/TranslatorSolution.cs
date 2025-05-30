@@ -44,3 +44,22 @@ public class TranslatorSolution
         return newWord;
     }
 }
+
+
+// // var letters = new[] {"A", "A", "B", "C", "B", "C"};
+//    var summary = new Dictionary<char, int>();
+// for (var letter in letters) {
+//     if (!summary.ContainsKey(letter))
+//     {
+//         summary[letter] = 1;
+//     }
+//     else {
+//          summary[letter] += 1;
+//     }
+    
+//     Console.WriteLine(string.Join(", ", summaryTable));
+// // [A, 2], [B, 2], [G, 3], [C, 1], [D, 1]
+//    }
+// // if letter.ContainsKey {
+// //    l[letter]=1
+// // } 

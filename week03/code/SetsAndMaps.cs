@@ -1,5 +1,6 @@
 using System.Text.Json;
-
+using System;
+using System.Collections.Generic;
 public static class SetsAndMaps
 {
     /// <summary>
@@ -21,8 +22,22 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        HashSet<string> seen = new HashSet<string>();
+        List<string> result = new List<string>();
+        foreach (var word in words)
+        {
+            if (word.Length != 2 || word[0] == word[1])
+                continue;
+            string reversed = $"{word[1]}{word[0]}";
+            if (seen.Contains(reversed))
+            {
+                result.Add($"{reversed} & {word}");
+            }
+            seen.Add(word);
+
+        }
+        return result.ToArray();
+        ;
     }
 
     /// <summary>
@@ -41,8 +56,19 @@ public static class SetsAndMaps
         var degrees = new Dictionary<string, int>();
         foreach (var line in File.ReadLines(filename))
         {
+
+            if (string.IsNullOrWhiteSpace(line)) continue;
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            if (fields.Length < 4) continue;
+            string degree = fields[3].Trim();
+            if (!degrees.ContainsKey(degree))
+            {
+                degrees[degree] = 1;
+            }
+            else
+            {
+                degrees[degree]++;
+            }
         }
 
         return degrees;
@@ -66,9 +92,48 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        word1 = word1.Replace("", "").ToLower();
+        word2 = word2.Replace("", "").ToLower();
+
+        if (word1.Length != word2.Length)
+            return false;
+        var letterCounts = new Dictionary<char, int>();
+
+        foreach (var c in word1)
+        {
+            if (!letterCounts.ContainsKey(c))
+            {
+                letterCounts[c] = 1;
+            }
+            else
+            {
+                letterCounts[c]++;
+            }
+
+        }
+
+        foreach (var c in word2)
+        {
+            //si una letra en word 1 esta wn word 2 se restara por ejemplo si esta CAT TACC C,1 C,-1 T,0 A,0 
+            if (!letterCounts.ContainsKey(c))
+                return false;
+            letterCounts[c]--;
+            if (letterCounts[c] < 0)
+                return false;
+
+        }
+        foreach (var count in letterCounts.Values)
+        {
+            //si una letra en word 1 esta wn word 2 se restara por ejemplo si esta CAT TACC C,1 C,-1 T,0 A,0 
+            if (count != 0)
+                return false;
+
+        }     
+        return true;
+
+        
     }
+        
 
     /// <summary>
     /// This function will read JSON (Javascript Object Notation) data from the 
