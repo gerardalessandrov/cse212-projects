@@ -4,6 +4,7 @@ public class LinkedList : IEnumerable<int>
 {
     private Node? _head;
     private Node? _tail;
+    
 
     /// <summary>
     /// Insert a new node at the front (i.e. the head) of the linked list.
@@ -33,6 +34,18 @@ public class LinkedList : IEnumerable<int>
     public void InsertTail(int value)
     {
         // TODO Problem 1
+        Node newNode = new(value);
+        if (_tail is null)
+        {
+            _head = newNode;
+            _tail = newNode;
+        }
+         else
+        {
+            newNode.Prev = _tail; // Connect new node to the previous head
+            _tail.Next = newNode; // Connect the previous head to the new node
+            _tail = newNode; // Update the head to point to the new node
+        }
     }
 
 
@@ -65,6 +78,18 @@ public class LinkedList : IEnumerable<int>
     public void RemoveTail()
     {
         // TODO Problem 2
+         if (_head == _tail)
+        {
+            _head = null;
+            _tail = null;
+        }
+        // If the list has more than one item in it, then only the tail
+        // will be affected.
+        else if (_tail is not null)
+        {
+            _tail.Prev!.Next = null; // Disconnect the last node from the second-to-last node
+            _tail = _tail.Prev; // Update _tail to point to the new last node
+        }
     }
 
     /// <summary>
@@ -109,6 +134,37 @@ public class LinkedList : IEnumerable<int>
     public void Remove(int value)
     {
         // TODO Problem 3
+        if (_head == null) return;
+        if (_head.Data == value)  // 5 == 5
+        {
+            RemoveHead();          // Se elimina el primer nodo
+            return;                // Salimos de la función
+        }
+        if (_tail != null && _tail.Data == value)
+        {
+            RemoveTail();
+            return;
+        }
+        Node current = _head;
+       while (current.Next != null)
+
+    {
+
+            if (current.Next.Data == value)
+            {
+                current.Next = current.Next.Next;
+
+                // Si se eliminó el penúltimo nodo, actualizamos el tail
+                if (current.Next == null)
+                {
+                    _tail = current;
+                }
+
+                return; // Solo se elimina una coincidencia
+            }
+
+    current = current.Next;
+}
     }
 
     /// <summary>
@@ -117,6 +173,18 @@ public class LinkedList : IEnumerable<int>
     public void Replace(int oldValue, int newValue)
     {
         // TODO Problem 4
+        Node? current = _head;
+        
+        while (current != null)
+        {
+            if (current.Data == oldValue)
+            {
+                current.Data = newValue;
+                return; // Solo reemplaza la primera coincidencia
+            }
+
+            current = current.Next;
+        }
     }
 
     /// <summary>
@@ -146,8 +214,15 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public IEnumerable Reverse()
     {
+        var curr = _tail; // Start at the final since this is a forward iteration.
+        while (curr is not null)
+        {
+            yield return curr.Data; // Provide (yield) each item to the user
+            curr = curr.Prev; // Go forward in the linked list
+        }
         // TODO Problem 5
-        yield return 0; // replace this line with the correct yield return statement(s)
+        
+     // replace this line with the correct yield return statement(s)
     }
 
     public override string ToString()
