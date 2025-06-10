@@ -4,7 +4,7 @@ public class LinkedList : IEnumerable<int>
 {
     private Node? _head;
     private Node? _tail;
-    
+
 
     /// <summary>
     /// Insert a new node at the front (i.e. the head) of the linked list.
@@ -40,7 +40,7 @@ public class LinkedList : IEnumerable<int>
             _head = newNode;
             _tail = newNode;
         }
-         else
+        else
         {
             newNode.Prev = _tail; // Connect new node to the previous head
             _tail.Next = newNode; // Connect the previous head to the new node
@@ -78,7 +78,7 @@ public class LinkedList : IEnumerable<int>
     public void RemoveTail()
     {
         // TODO Problem 2
-         if (_head == _tail)
+        if (_head == _tail)
         {
             _head = null;
             _tail = null;
@@ -131,61 +131,57 @@ public class LinkedList : IEnumerable<int>
     /// <summary>
     /// Remove the first node that contains 'value'.
     /// </summary>
-    public void Remove(int value)
+    // TODO Problem 3
+   public void Remove(int value)
+{
+    if (_head == null) return;
+
+    if (_head.Data == value)
     {
-        // TODO Problem 3
-        if (_head == null) return;
-        if (_head.Data == value)  // 5 == 5
+        RemoveHead();
+        return;
+    }
+
+    Node? current = _head.Next;
+
+    while (current != null)
+    {
+        if (current.Data == value)
         {
-            RemoveHead();          // Se elimina el primer nodo
-            return;                // Salimos de la función
-        }
-        if (_tail != null && _tail.Data == value)
-        {
-            RemoveTail();
+            if (current == _tail)
+                _tail = current.Prev;
+
+            if (current.Prev != null)
+                current.Prev.Next = current.Next;
+
+            if (current.Next != null)
+                current.Next.Prev = current.Prev;
+
             return;
         }
-        Node current = _head;
-       while (current.Next != null)
 
-    {
-
-            if (current.Next.Data == value)
-            {
-                current.Next = current.Next.Next;
-
-                // Si se eliminó el penúltimo nodo, actualizamos el tail
-                if (current.Next == null)
-                {
-                    _tail = current;
-                }
-
-                return; // Solo se elimina una coincidencia
-            }
-
-    current = current.Next;
-}
+        current = current.Next;
     }
+}
+
 
     /// <summary>
     /// Search for all instances of 'oldValue' and replace the value to 'newValue'.
     /// </summary>
     public void Replace(int oldValue, int newValue)
-    {
-        // TODO Problem 4
-        Node? current = _head;
-        
-        while (current != null)
-        {
-            if (current.Data == oldValue)
-            {
-                current.Data = newValue;
-                return; // Solo reemplaza la primera coincidencia
-            }
+{
+    Node? current = _head;
 
-            current = current.Next;
+    while (current != null)
+    {
+        if (current.Data == oldValue)
+        {
+            current.Data = newValue;
         }
+
+        current = current.Next;
     }
+}
 
     /// <summary>
     /// Yields all values in the linked list
