@@ -15,7 +15,17 @@ public static class Recursion
     public static int SumSquaresRecursive(int n)
     {
         // TODO Start Problem 1
-        return 0;
+   
+        if (n <= 0)
+        {
+            return 0;
+        }
+        else
+        {
+
+            return (n * n) + SumSquaresRecursive(n - 1);
+        }
+        
     }
 
     /// <summary>
@@ -40,6 +50,26 @@ public static class Recursion
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
         // TODO Start Problem 2
+        if (word.Length == size)
+        {
+            results.Add(word);
+            return;
+        }
+        else
+        {
+            for (int i = 0; i < letters.Length; i++)
+            {
+                char letter = letters[i];
+                // Si la letra ya está en current, saltamos esta iteración
+                if (word.Contains(letter))
+                {
+                    continue;
+                }
+                PermutationsChoose(results, letters, size, word + letter);
+
+            }
+
+        }
     }
 
     /// <summary>
@@ -87,19 +117,23 @@ public static class Recursion
     public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null)
     {
         // Base Cases
-        if (s == 0)
+        
+        if (remember == null)
+        {
+            remember = new Dictionary<int, decimal>();
+        }
+        if (s <= 0)
             return 0;
-        if (s == 1)
+        if (s == 0)
             return 1;
-        if (s == 2)
-            return 2;
-        if (s == 3)
-            return 4;
-
+        if (remember.ContainsKey(s))
+        {
+            return remember[s];
+        }
         // TODO Start Problem 3
-
         // Solve using recursion
         decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        remember[s] = ways;
         return ways;
     }
 
@@ -116,10 +150,22 @@ public static class Recursion
     /// Using recursion, insert all possible binary strings for a given pattern into the results list.  You might find 
     /// some of the string functions like IndexOf and [..X] / [X..] to be useful in solving this problem.
     /// </summary>
-    public static void WildcardBinary(string pattern, List<string> results)
-    {
+   {
         // TODO Start Problem 4
-    }
+        if (!pattern.Contains('*'))
+        {
+            results.Add(pattern);
+            return;
+        }
+        int index = pattern.IndexOf('*');
+        string before = pattern[..index];
+       string after = pattern[(index + 1)..];
+       WildcardBinary( before + "0" + after,results);
+       WildcardBinary (before + "1" + after,results);
+
+} public static void WildcardBinary(string pattern, List<string> results)
+    
+    
 
     /// <summary>
     /// Use recursion to insert all paths that start at (0,0) and end at the
